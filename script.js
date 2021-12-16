@@ -8,12 +8,12 @@ window.addEventListener("load", () => {
   canvas.height = height;
   canvas.width = width;
 
-  const stockRateX = [210];
-  const stockRateY = [390];
-  const i = 0;
+  const stockRateX = [200];
+  const stockRateY = [400];
+  let i = 0;
 
   const incX = [5, 10, 7, 3];
-  const incY = [10, 5, 15, 25, 20, 30, 40];
+  const incY = [10, 5, 15, 25, 20, 30, 40, -10, -5, -15, -25, -20, -30, -40];
 
   ctx.beginPath();
   ctx.moveTo(200, 400);
@@ -21,39 +21,34 @@ window.addEventListener("load", () => {
   ctx.strokeStyle = "white";
   ctx.stroke();
   ctx.beginPath();
-  ctx.moveTo(200, 400);
 
   const createLine = () => {
     const randomIncX = incX[Math.floor(Math.random() * incX.length)];
     const randomIncY = incY[Math.floor(Math.random() * incY.length)];
+    // const randomSymbol = ["-", "+"][Math.floor(Math.random() * 2)];
 
     const addX = stockRateX[i] + randomIncX;
     const addY = stockRateY[i] + randomIncY;
     stockRateX.push(addX);
     stockRateY.push(addY);
+    console.log(stockRateX, stockRateY);
 
-    return [addX, addY];
+    ctx.moveTo(stockRateX[i], stockRateY[i]);
+    ctx.lineTo(stockRateX[i + 1], stockRateY[i + 1]);
+    i++;
+    ctx.strokeStyle = "white";
+    ctx.stroke();
+
+    if (stockRateX.length === 15 && stockRateY.length === 15) {
+      alert("ok");
+      clearInterval(interval);
+    }
   };
 
-  const interval = setInterval(() => {
-    // console.log(stockRateX, stockRateY);
-    // return createLine();
-  }, 2000);
-
-  if (stockRateX.length === 5 && stockRateY.length === 5) {
-    clearInterval(interval);
-  }
-
-  ctx.lineTo(200, 300);
-  ctx.lineTo(210, 280);
-  ctx.lineTo(218, 270);
-  ctx.lineTo(225, 320);
-  ctx.lineTo(235, 220);
-  ctx.lineTo(246, 290);
-  ctx.lineTo(256, 190);
-  ctx.lineTo(265, 300);
+  const interval = setInterval(createLine, 2000);
+  /* console.log(interval);
   ctx.strokeStyle = "white";
-  ctx.stroke();
+  ctx.stroke(); */
 });
 
 window.addEventListener("resize", () => {
